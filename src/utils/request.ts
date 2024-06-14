@@ -1,38 +1,29 @@
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
+type RequestBody = Record<string, any> | null;
 
+type ResponseData = any;
 
-const setRequest = (baseUrl: string) => {
-    const API: AxiosInstance = axios.create({
-        baseURL: baseUrl,
+export async function makeRequest(url: string, method: string = 'GET', body: RequestBody = null): Promise<ResponseData> {
+    const options: RequestInit = {
+        method: method,
         headers: {
-            'Content-Type':'application/json',
-            },
-        });
+            'Content-Type': 'application/json'
+        }
+    };
 
-    return API
-}
-
-export const postRequest = async (baseUrl: string, route: string, data:any): Promise<any> => {
-    const API: AxiosInstance = setRequest(baseUrl);
- 
-    try {
-        const response: AxiosResponse<any> = await API.post(route,data);
-        return response.data;
-
-    } catch (error){
-        throw error;
+    if (method !== 'GET' && body) {
+        options.body = JSON.stringify(body);
     }
-}
-
-
-export const getRequest = async (baseUrl:string, route: string): Promise<any> => {
-    const API: AxiosInstance = setRequest(baseUrl);
 
     try {
-        const response: AxiosResponse<any> = await API.get(route);
-        return response.data;
+        const response = await fetch(url, options);
 
+        if (!response.ok) {
+            throw new Error(`Erro na requisição. Status: ${response.status}`);
+        }
+
+        return await response.json();
     } catch (error) {
+        console.log(error);
         throw error;
     }
 }

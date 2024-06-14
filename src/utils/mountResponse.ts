@@ -1,10 +1,20 @@
-import {  } from './news'
-import {  } from './wheater'
+import { getWeather, WeatherData } from './wheater'
 
 
-export const getResponse = async (): Promise<object> => {
+export const makeResponse = async (city:string, lang:string): Promise<object> => {
+    const data:WeatherData = await getWeather(city,lang);
+    
+    const currentTemperature: number = Math.ceil(data.main.temp - 273.15);
+    const minTemperature: number = Math.ceil(data.main.temp_min - 273.15);
+    const maxTemperature: number = Math.ceil(data.main.temp_max - 273.15);
+    const airHumidity:string = `${data.main.humidity}%`;
 
-    return {};
+    const airQuality:string = "Sla bro"
+    const news = {}
+
+    const response = mountJsonResponse(currentTemperature,maxTemperature,minTemperature,airHumidity,airQuality,news)
+
+    return response;
 }
 
 
