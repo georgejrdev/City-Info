@@ -5,11 +5,9 @@ dotenv.config();
 
 
 export const getWeather = async (city:string, lang:string): Promise<WeatherData> => {
-    const API_KEY = process.env.API_WEATHER;
+    const apiKey = process.env.API_WEATHER;
 
-    const response = await makeRequest(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&lang=${lang}`) 
-    console.log(response)
-    return response;
+    return await makeRequest(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&lang=${lang}`) 
 }
 
 

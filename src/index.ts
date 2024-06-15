@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { makeResponse } from './utils/mountResponse'
+import { getNews } from './utils/news';
 
 const app = express();
 const port = 3000;

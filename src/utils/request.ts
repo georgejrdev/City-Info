@@ -23,7 +23,6 @@ export async function makeRequest(url: string, method: string = 'GET', body: Req
 
         return await response.json();
     } catch (error) {
-        console.log(error);
         throw error;
     }
 }
