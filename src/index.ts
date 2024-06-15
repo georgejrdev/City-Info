@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express';
-import { makeResponse } from './utils/mountResponse'
-import { getNews } from './utils/news';
+import { makeAllInfoResponse } from './utils/makeResponse'
 
 const app = express();
 const port = 3000;
@@ -18,7 +17,7 @@ app.get('/', async (req: Request, res: Response) => {
     lang = "en";
   }
 
-  const response = await makeResponse(city, lang);
+  const response = await makeAllInfoResponse(city, lang);
   res.send(response);
 });
 

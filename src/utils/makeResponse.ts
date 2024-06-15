@@ -1,10 +1,10 @@
-import { getNews, NewsData } from './news';
+import { getNews, FormatedNewsData } from './news';
 import { getWeather, WeatherData } from './wheater'
 
 
-export const makeResponse = async (city:string, lang:string): Promise<object> => {
+export const makeAllInfoResponse = async (city:string, lang:string): Promise<object> => {
 
-    const news:NewsData | string = await getNews(city); 
+    const news:FormatedNewsData | string = await getNews(city); 
     const weather:WeatherData = await getWeather(city,lang);
 
     const currentTemperature: number = Math.ceil(weather.main.temp - 273.15);
@@ -14,13 +14,13 @@ export const makeResponse = async (city:string, lang:string): Promise<object> =>
 
     const airQuality:string = "Sla bro"
 
-    const response = mountJsonResponse(currentTemperature,maxTemperature,minTemperature,airHumidity,airQuality,news)
+    const response = makeJsonAllInfo(currentTemperature,maxTemperature,minTemperature,airHumidity,airQuality,news)
 
     return response;
 }
 
 
-const mountJsonResponse = (currentTemperature: number,  maxTemperature: number, minTemperature: number, airHumidity: string, airQuality: string, news: NewsData | string) : object => {
+const makeJsonAllInfo = (currentTemperature: number,  maxTemperature: number, minTemperature: number, airHumidity: string, airQuality: string, news: FormatedNewsData | string) : object => {
     const response = 
         {
             "currentTemperature":currentTemperature,

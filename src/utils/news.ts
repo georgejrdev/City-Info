@@ -4,21 +4,16 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 
-export const getNews = async (city: string): Promise<NewsData | string> => {
+export const getNews = async (city: string): Promise<FormatedNewsData | string> => {
+    const response:NewsResponse = await news(city);  
 
-    const apiKey = process.env.API_NEWS;
-    const baseUrl = 'https://newsapi.org/v2/everything';
-    const url = `${baseUrl}?q=${encodeURIComponent(city)}&language=pt&sortBy=relevancy&apiKey=${apiKey}`;
-
-    const response = await makeRequest(url);
-    
     const articles = response.articles.slice(0, 3);
 
     if (articles.length < 3) {
         return "Not enough articles found.";
     }
 
-    const result: NewsData = {
+    const result: FormatedNewsData = {
         news1: {
             title: articles[0].title,
             description: articles[0].description,
@@ -40,7 +35,19 @@ export const getNews = async (city: string): Promise<NewsData | string> => {
 };
 
 
-export interface NewsData {
+const news = async (city: string): Promise<NewsResponse> => {
+
+    const apiKey = process.env.API_NEWS;
+    const baseUrl = 'https://newsapi.org/v2/everything';
+    const url = `${baseUrl}?q=${encodeURIComponent(city)}&language=pt&sortBy=relevancy&apiKey=${apiKey}`;
+
+    const response = await makeRequest(url);
+    
+    return response;
+}
+
+
+export interface FormatedNewsData {
     news1: {
         title: string;
         description: string;
@@ -56,4 +63,26 @@ export interface NewsData {
         description: string;
         link: string;
     };
+}
+
+
+interface NewsArticle {
+    source: {
+        id: string | null;
+        name: string;
+    };
+    author: string;
+    title: string;
+    description: string;
+    url: string;
+    urlToImage: string;
+    publishedAt: string;
+    content: string;
+}
+
+
+interface NewsResponse {
+    status: string;
+    totalResults: number;
+    articles: NewsArticle[];
 }
