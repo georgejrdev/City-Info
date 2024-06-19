@@ -1,11 +1,12 @@
 import express, { Request, Response } from 'express';
-import { makeAllInfoResponse } from './utils/makeResponse'
+import { makeFormatedResponse } from './utils/makeResponse'
 
 const app = express();
 const port = 3000;
 
 
 app.get('/', async (req: Request, res: Response) => {
+  
   let city = req.query.city as string;
   let lang = req.query.lang as string;
 
@@ -17,8 +18,7 @@ app.get('/', async (req: Request, res: Response) => {
     lang = "en";
   }
 
-  const response = await makeAllInfoResponse(city, lang);
-  res.send(response);
+  res.send(await makeFormatedResponse(city, lang));
 });
 
 

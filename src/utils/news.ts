@@ -4,8 +4,8 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 
-export const getNews = async (city: string): Promise<FormatedNewsData | string> => {
-    const response:NewsResponse = await news(city);  
+export const getFormatedNews = async (city: string): Promise<FormatedNewsData | string> => {
+    const response:NewsResponse = await getNews(city);  
 
     const articles = response.articles.slice(0, 3);
 
@@ -35,7 +35,7 @@ export const getNews = async (city: string): Promise<FormatedNewsData | string> 
 };
 
 
-const news = async (city: string): Promise<NewsResponse> => {
+const getNews = async (city: string): Promise<NewsResponse> => {
 
     const apiKey = process.env.API_NEWS;
     const baseUrl = 'https://newsapi.org/v2/everything';
